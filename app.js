@@ -17,7 +17,7 @@ document.addEventListenter("DOMContentLoaded", () => {
 		squares[index].classList.remove('apple')
 		clearInterval(interval)
 		score = 0
-
+		//randomApple()
 		direction = 1
 		scoreDisplay.innerHTML = score
 		intervalTime = 1000
@@ -25,12 +25,43 @@ document.addEventListenter("DOMContentLoaded", () => {
 		currentIndex = 0
 		currentSnake.forEach(index => squares[index].classList.add('snake'))
 		interval = setInterval(moveOutcomes, intervalTime)
-		
+				
 	}
 
+//outcomes for the snake
+
+function moveOutcomes() {
+	//deals with snake hitting border
+ 	if(
+ 		(currentSnake[0] + width >= (width*width) && direction === width)|| //sbake hits right wall
+ 		(currentSnake[0] % width === width-1 && direction === 1)||//snake hits bottom
+ 		(currentSnake[0] - width < 0 && direction === -width)||
+ 		squares[currentSnake[0] + direction].classList.contains('snake')
+ 		){
+ 		return clearInterval(interval)
+ 	}
+
+ 	const tail = currentSnake.pop()
+ 	square[tail].classList.remove('snake')
+ 	currentSnake.unshift(currentSnake[0] + direction)
 
 
+ 	// deals with getting an apple
+ 	if(squares[currentSnake[0]].classList.contains('apple')){
+ 		squares[currentSnake[0]].classList.remove('apple')
+ 		squares[tail].classList.add('snake')
+ 		currentSnake.push(tail)
+ 		//randomApple()
+ 		score++
+ 		scoreDisplay.textContent = score
+ 		clearInterval(interval)
+ 		intervalTime = intervalTime * speed
+ 		interval = setInterval(moveOutcomes, intervalTime)	
+ 	}
+ 	squares[currentSnake[0]].classList.add('snake')
 
+
+}
 
 
 
@@ -56,12 +87,13 @@ document.addEventListenter("DOMContentLoaded", () => {
 		} else if (e.keyCode === 38){
 			direction = -width
 		} else if (e.ketCode === 37){
-			direction = 1
+			direction = -1
 		} else if (e.keyCode === 40){
-			direction = 10
+			direction = +width
 		}
 	}
 
 	document.addEventListenter('keyup', control)
+	startBtn.addEventListenter('click', startGame)
 
 })
