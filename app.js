@@ -1,4 +1,4 @@
-document.addEventListenter("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
 	const squares = document.querySelectorAll('.grid div')
 	const scoreDisplay = document.querySelector('span')	
 	const startBtn = document.querySelector('.start')
@@ -11,10 +11,11 @@ document.addEventListenter("DOMContentLoaded", () => {
 	let speed = 0.9
 	let intervalTime = 0
 	let interval = 0
+	let width = 10
 
 	function startGame(){
-		currentSnake.forEach(index => squares[index].classList.remove('snake'))
-		squares[index].classList.remove('apple')
+		currentSnake.forEach(index => squares[index].classList.remove('snake') && squares[index].classList.remove('apple'))
+		
 		clearInterval(interval)
 		score = 0
 		//randomApple()
@@ -29,20 +30,22 @@ document.addEventListenter("DOMContentLoaded", () => {
 	}
 
 //outcomes for the snake
-
+console.log(currentSnake[0])
+console.log(direction)
 function moveOutcomes() {
 	//deals with snake hitting border
  	if(
- 		(currentSnake[0] + width >= (width*width) && direction === width)|| //sbake hits right wall
+ 		(currentSnake[0] + width >= (width*width) && direction === width)|| //snake hits right wall
  		(currentSnake[0] % width === width-1 && direction === 1)||//snake hits bottom
  		(currentSnake[0] - width < 0 && direction === -width)||
  		squares[currentSnake[0] + direction].classList.contains('snake')
+
  		){
  		return clearInterval(interval)
  	}
 
  	const tail = currentSnake.pop()
- 	square[tail].classList.remove('snake')
+ 	squares[tail].classList.remove('snake')
  	currentSnake.unshift(currentSnake[0] + direction)
 
 
@@ -68,16 +71,6 @@ function moveOutcomes() {
 
 
 
-
-
-
-
-
-
-
-
-
-
 	function control(e) {
 		squares[currentIndex].classList.remove('snake')
 
@@ -93,7 +86,7 @@ function moveOutcomes() {
 		}
 	}
 
-	document.addEventListenter('keyup', control)
-	startBtn.addEventListenter('click', startGame)
+	document.addEventListener('keyup', control)
+	startBtn.addEventListener('click', startGame)
 
 })
